@@ -1,0 +1,31 @@
+{
+  "name": "cypress-cucumber-ui-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UI test automation with Cypress, Cucumber (Gherkin), TypeScript and page/component objects",
+  "scripts": {
+    "cy:open": "cypress open --e2e",
+    "test": "cypress run",
+    "test:ci": "cypress run --config-file cypress.ci.config.ts",
+    "test:smoke": "cypress run --env tags=@smoke",
+    "test:regression": "cypress run --env tags=@regression",
+    "typecheck": "tsc --noEmit"
+  },
+  "cypress-cucumber-preprocessor": {
+    "stepDefinitions": "src/e2e/stepDefinitions/**/*.ts",
+    "filterSpecs": true,
+    "omitFiltered": true,
+    "html": {
+      "enabled": true,
+      "output": "reports/cucumber-report.html"
+    }
+  },
+  "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^28.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "@types/node": "^22.0.0",
+    "cypress": "^15.21.1",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.9.3"
+  }
+}

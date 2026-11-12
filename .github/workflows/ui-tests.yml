@@ -1,0 +1,63 @@
+name: UI Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Nightly smoke run at 03:30 UTC
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Cucumber tag expression (e.g. @smoke, @regression and not @negative)"
+        required: false
+        default: "@run"
+
+jobs:
+  ui-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Choose the tags to run
+        id: tags
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "value=@smoke" >> "$GITHUB_OUTPUT"
+          elif [ -n "${{ github.event.inputs.tags }}" ]; then
+            echo "value=${{ github.event.inputs.tags }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=@run" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          browser: chrome
+          config-file: cypress.ci.config.ts
+          env: tags=${{ steps.tags.outputs.value }}
+
+      - name: Upload reports and screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-reports
+          path: reports/
+          if-no-files-found: ignore
