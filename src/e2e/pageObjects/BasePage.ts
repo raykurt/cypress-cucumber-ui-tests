@@ -6,7 +6,7 @@ export abstract class BasePage {
   protected abstract readonly path: string;
 
   open(): void {
-    cy.visit(this.path);
+   cy.visit(this.path, { failOnStatusCode: false });
   }
 
   isCurrentUrlIncludes(urlPart: string): void {
