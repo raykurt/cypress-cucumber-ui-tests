@@ -77,6 +77,7 @@ Reports: `reports/cucumber-report.html`; screenshots of failed steps in `reports
 |---|---|---|
 | TC-3001 | Standard user logs in successfully | smoke, regression |
 | TC-3002 | Login fails with invalid data (Scenario Outline: locked user, wrong password, empty username) | negative, regression |
+| TC-3003 | Logged-in user logs out and returns to the login page | smoke, regression |
 | TC-3101 | Products are listed after login | smoke, regression |
 | TC-3102 | Sort the product list (Scenario Outline: name and price) | regression |
 | TC-3103 | Adding a product updates the cart badge | regression |
