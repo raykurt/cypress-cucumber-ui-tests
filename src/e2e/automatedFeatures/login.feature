@@ -14,9 +14,14 @@ Feature: Login
   Scenario Outline: Login fails with invalid data
     When the user logs in with username "<username>" and password "<password>"
     Then the login error message should contain "<message>"
-
     Examples:
       | username        | password       | message                              |
       | locked_out_user | secret_sauce   | Sorry, this user has been locked out |
       | standard_user   | wrong_password | Username and password do not match   |
       |                 | secret_sauce   | Username is required                 |
+      
+  @smoke @regression @TC-3003
+  Scenario: Logged-in user logs out
+    When the user logs in as "standard"
+    And the user logs out
+    Then the login page should be displayed
