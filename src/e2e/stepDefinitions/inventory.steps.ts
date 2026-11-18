@@ -39,3 +39,15 @@ When('the user adds {string} to the cart', (productName: string) => {
 Then('the cart badge should show {int}', (count: number) => {
   inventoryPage.header.cartBadgeShouldShow(count);
 });
+
+When('the user removes {string} on the products page', (productName: string) => {
+  inventoryPage.removeFromCart(productName);
+});
+
+Then('the cart badge should not be displayed', () => {
+  inventoryPage.header.cartBadgeShouldNotExist();
+});
+
+Then('the add to cart button should be shown again for {string}', (productName: string) => {
+  inventoryPage.e.addToCartButton(productName).should('be.visible');
+});
