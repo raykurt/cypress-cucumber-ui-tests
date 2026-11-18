@@ -25,3 +25,10 @@ Feature: Product list
   Scenario: Adding a product updates the cart badge
     When the user adds "Sauce Labs Backpack" to the cart
     Then the cart badge should show 1
+
+  @regression @TC-3104
+  Scenario: Removing a product on the products page clears the cart badge
+    Given the user has added "Sauce Labs Backpack" to the cart
+    When the user removes "Sauce Labs Backpack" on the products page
+    Then the cart badge should not be displayed
+    And the add to cart button should be shown again for "Sauce Labs Backpack"
