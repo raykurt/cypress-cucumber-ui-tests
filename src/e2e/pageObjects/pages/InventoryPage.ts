@@ -15,6 +15,7 @@ export class InventoryPage extends BasePage {
     itemPrices: () => byTest('inventory-item-price'),
     sortSelect: () => byTest('product-sort-container'),
     addToCartButton: (productName: string) => byTest(`add-to-cart-${toSlug(productName)}`),
+    removeButton: (productName: string) => byTest(`remove-${toSlug(productName)}`),
   };
 
   shouldBeDisplayed(): void {
@@ -24,6 +25,10 @@ export class InventoryPage extends BasePage {
 
   addToCart(productName: string): void {
     this.e.addToCartButton(productName).click();
+  }
+
+  removeFromCart(productName: string): void {
+    this.e.removeButton(productName).click();
   }
 
   sortBy(visibleOption: string): void {
