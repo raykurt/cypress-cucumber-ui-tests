@@ -11,6 +11,7 @@ export class CartPage extends BasePage {
     ...this.header.e,
     cartItems: () => byTest('inventory-item'),
     checkoutButton: () => byTest('checkout'),
+    continueShoppingButton: () => byTest('continue-shopping'),
     removeButton: (productName: string) => byTest(`remove-${toSlug(productName)}`),
   };
 
@@ -20,6 +21,14 @@ export class CartPage extends BasePage {
 
   startCheckout(): void {
     this.e.checkoutButton().click();
+  }
+
+  continueShopping(): void {
+    this.e.continueShoppingButton().click();
+  }
+
+  shouldContain(productName: string): void {
+    this.e.cartItems().should('contain.text', productName);
   }
 
   shouldBeEmpty(): void {
