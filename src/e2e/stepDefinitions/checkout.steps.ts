@@ -53,3 +53,41 @@ Then('the cart should be empty', () => {
   cartPage.shouldBeEmpty();
   cartPage.header.cartBadgeShouldNotExist();
 });
+
+When('the user starts checkout leaving {string} empty', (field: keyof Customer) => {
+  cartPage.startCheckout();
+  cy.fixture<Customer>('customer').then((customer) => {
+    checkoutPage.fillCustomer({ ...customer, [field]: '' });
+  });
+  checkoutPage.continue();
+});
+
+Then('the item total should equal the sum of the product prices', () => {
+  checkoutPage.itemTotalShouldMatchProductPrices();
+});
+
+Then('the order total should equal the item total plus tax', () => {
+  checkoutPage.totalShouldBeItemTotalPlusTax();
+});
+
+When('the user starts checkout', () => {
+  cartPage.startCheckout();
+  checkoutPage.shouldBeOpen();
+});
+
+When('the user cancels the checkout', () => {
+  checkoutPage.cancel();
+});
+
+Then('the cart should contain {string}', (productName: string) => {
+  cartPage.shouldBeOpen();
+  cartPage.shouldContain(productName);
+});
+
+When('the user continues shopping', () => {
+  cartPage.continueShopping();
+});
+
+When('the user goes back home', () => {
+  checkoutPage.backHome();
+});
