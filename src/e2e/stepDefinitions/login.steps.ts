@@ -28,6 +28,11 @@ When('the user logs out', () => {
 });
 
 Then('the login page should be displayed', () => {
+  cy.location('pathname').should('eq', '/');
   loginPage.e.loginButton().should('be.visible');
-  loginPage.e.username().should('have.value', '');
+});
+
+When('the user opens {string} without logging in', (path: string) => {
+  // The app answers inner pages with 404 but still renders them, like BasePage.open()
+  cy.visit(path, { failOnStatusCode: false });
 });
