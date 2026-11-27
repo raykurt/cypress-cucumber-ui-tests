@@ -76,14 +76,24 @@ Reports: `reports/cucumber-report.html`; screenshots of failed steps in `reports
 | ID | Scenario | Tags |
 |---|---|---|
 | TC-3001 | Standard user logs in successfully | smoke, regression |
-| TC-3002 | Login fails with invalid data (Scenario Outline: locked user, wrong password, empty username) | negative, regression |
-| TC-3003 | Logged-in user logs out and returns to the login page | smoke, regression |
+| TC-3002 | Login fails with invalid data (Scenario Outline: locked user, wrong password, empty username, empty password) | negative, regression |
+| TC-3003 | User logs out from the side menu | regression |
+| TC-3004 | Products page cannot be opened without logging in | negative, regression |
 | TC-3101 | Products are listed after login | smoke, regression |
-| TC-3102 | Sort the product list (Scenario Outline: name and price) | regression |
+| TC-3102 | Sort the product list (Scenario Outline: name A–Z / Z–A, price low–high / high–low) | regression |
 | TC-3103 | Adding a product updates the cart badge | regression |
+| TC-3104 | Adding several products counts all of them | regression |
+| TC-3105 | Removing a product on the list clears the cart badge | regression |
+| TC-3106 | The cart is kept after a page reload | regression |
+| TC-3107 | Product details show the same name and price as the list | regression |
 | TC-3201 | Complete an order | smoke, regression |
 | TC-3202 | Checkout requires a first name | negative, regression |
 | TC-3203 | Remove a product from the cart | regression |
+| TC-3204 | Checkout requires every customer field (Scenario Outline: last name, postal code) | negative, regression |
+| TC-3205 | Order total is the item total plus tax (calculated, not hard-coded) | regression |
+| TC-3206 | Cancelling checkout returns to the cart with the items kept | regression |
+| TC-3207 | Continue shopping from the cart | regression |
+| TC-3208 | After the order the cart is empty and the user can go back home | regression |
 | TC-3901–3902 | Manual checks (mobile layout, slow connection) | manual |
 
 > Sauce Demo is a public practice site; the credentials in `src/fixtures/users.json` are the ones it publishes for testing.
