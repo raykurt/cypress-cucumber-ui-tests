@@ -1,7 +1,9 @@
 import { Given, When, Then } from '@badeball/cypress-cucumber-preprocessor';
 import { InventoryPage } from '../pageObjects/pages/InventoryPage';
+import { ProductDetailsPage } from '../pageObjects/pages/ProductDetailsPage';
 
 const inventoryPage = new InventoryPage();
+const detailsPage = new ProductDetailsPage();
 
 Given('the user is logged in as {string}', (user: 'standard' | 'locked') => {
   cy.login(user);
@@ -41,13 +43,31 @@ Then('the cart badge should show {int}', (count: number) => {
 });
 
 When('the user removes {string} on the products page', (productName: string) => {
-  inventoryPage.removeFromCart(productName);
+  inventoryPage.removeFromList(productName);
 });
 
-Then('the cart badge should not be displayed', () => {
+Then('the cart badge should not be shown', () => {
   inventoryPage.header.cartBadgeShouldNotExist();
 });
 
-Then('the add to cart button should be shown again for {string}', (productName: string) => {
-  inventoryPage.e.addToCartButton(productName).should('be.visible');
+When('the user reloads the page', () => {
+  cy.reload();
+});
+
+When('the user opens the details of {string}', (productName: string) => {
+  // Remember the list price, so the details page can be compared with it
+  inventoryPage.priceOf(productName).as('listPrice');
+  inventoryPage.openDetails(productName);
+});
+
+Then('the details page should show {string} with the price from the list', (productName: string) => {
+  detailsPage.shouldBeOpen();
+  detailsPage.e.name().should('have.text', productName);
+  cy.get<string>('@listPrice').then((listPrice) => {
+    detailsPage.e.price().should('have.text', listPrice);
+  });
+});
+
+When('the user goes back to the products', () => {
+  detailsPage.backToProducts();
 });
