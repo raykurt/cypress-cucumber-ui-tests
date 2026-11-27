@@ -16,6 +16,7 @@ export class InventoryPage extends BasePage {
     sortSelect: () => byTest('product-sort-container'),
     addToCartButton: (productName: string) => byTest(`add-to-cart-${toSlug(productName)}`),
     removeButton: (productName: string) => byTest(`remove-${toSlug(productName)}`),
+    item: (productName: string) => byTest('inventory-item').filter(`:contains("${productName}")`),
   };
 
   shouldBeDisplayed(): void {
@@ -27,8 +28,17 @@ export class InventoryPage extends BasePage {
     this.e.addToCartButton(productName).click();
   }
 
-  removeFromCart(productName: string): void {
+  removeFromList(productName: string): void {
     this.e.removeButton(productName).click();
+  }
+
+  /** Price shown on the list for one product, e.g. "$29.99" */
+  priceOf(productName: string): Cypress.Chainable<string> {
+    return this.e.item(productName).find('[data-test="inventory-item-price"]').invoke('text');
+  }
+
+  openDetails(productName: string): void {
+    this.e.item(productName).find('[data-test="inventory-item-name"]').click();
   }
 
   sortBy(visibleOption: string): void {
